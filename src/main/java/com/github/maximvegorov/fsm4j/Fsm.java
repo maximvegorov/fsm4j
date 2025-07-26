@@ -48,7 +48,9 @@ public final class Fsm<S, E, C extends FsmExecutionContext<S>> implements AutoCl
 
     @Override
     public void close() {
-        stop(FsmExecutionStatus.TERMINATED);
+        if (executionStatus != FsmExecutionStatus.RUNNING) {
+            stop(FsmExecutionStatus.TERMINATED);
+        }
     }
 
     private boolean doTransition(Transition<S> transition, E event, FsmEventArgs args) {
@@ -56,21 +58,21 @@ public final class Fsm<S, E, C extends FsmExecutionContext<S>> implements AutoCl
         try {
             log.debug("Executing exit actions");
             var exitActions = config.getExitActions(transition.getSource());
-            runAllActions(exitActions, transition, event, args);
+            runActions(exitActions, transition, event, args);
 
             log.debug("Executing before transition actions");
             var beforeTransitionActions = config.getBeforeActions(transition);
-            runAllActions(beforeTransitionActions, transition, event, args);
+            runActions(beforeTransitionActions, transition, event, args);
 
             executionContext.setState(transition.getTarget());
 
             log.debug("Executing after transition actions");
             var afterTransitionActions = config.getAfterActions(transition);
-            runAllActions(afterTransitionActions, transition, event, args);
+            runActions(afterTransitionActions, transition, event, args);
 
             log.debug("Executing enter actions");
             var enterActions = config.getEnterActions(transition.getTarget());
-            runAllActions(enterActions, transition, event, args);
+            runActions(enterActions, transition, event, args);
 
             if (config.getTerminalStates().contains(executionContext.getState())) {
                 stop(FsmExecutionStatus.TERMINATED);
@@ -86,7 +88,7 @@ public final class Fsm<S, E, C extends FsmExecutionContext<S>> implements AutoCl
         }
     }
 
-    private void runAllActions(List<TransitionAction<S, E, C>> actions, Transition<S> transition, E event, FsmEventArgs args) {
+    private void runActions(List<TransitionAction<S, E, C>> actions, Transition<S> transition, E event, FsmEventArgs args) {
         if (!actions.isEmpty()) {
             actions.forEach(action -> action.run(executionContext, transition, event, args));
         }
