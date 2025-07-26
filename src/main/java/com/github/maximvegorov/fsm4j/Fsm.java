@@ -5,10 +5,12 @@ import lombok.NonNull;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.List;
+
 @Getter
 @ToString
 @Slf4j
-public final class Fsm<S, E, C extends FsmExecutionContext<S>> {
+public final class Fsm<S, E, C extends FsmExecutionContext<S>> implements AutoCloseable {
     private final FsmConfig<S, E, C> config;
     private final C executionContext;
     private FsmExecutionStatus executionStatus;
@@ -16,7 +18,7 @@ public final class Fsm<S, E, C extends FsmExecutionContext<S>> {
     private Fsm(FsmConfig<S, E, C> config, C executionContext) {
         this.config = config;
         this.executionContext = executionContext;
-        this.executionStatus = !config.getEndStates().contains(this.executionContext.getState())
+        this.executionStatus = !config.getTerminalStates().contains(this.executionContext.getState())
                 ? FsmExecutionStatus.RUNNING
                 : FsmExecutionStatus.TERMINATED;
     }
@@ -44,46 +46,60 @@ public final class Fsm<S, E, C extends FsmExecutionContext<S>> {
         return doTransition(transition.get(), event, args);
     }
 
-    private boolean doTransition(Transition<S> transition, E event, FsmEventArgs args) {
-        try {
-            var exitActions = config.getExitActions(transition.getSource());
-            if (!exitActions.isEmpty()) {
-                exitActions.forEach(action -> action.run(executionContext, transition, event, args));
-            }
+    @Override
+    public void close() {
+        stop(FsmExecutionStatus.TERMINATED);
+    }
 
+    private boolean doTransition(Transition<S> transition, E event, FsmEventArgs args) {
+        log.debug("Transition {} fired by event {} with args {}", transition, event, args);
+        try {
+            log.debug("Executing exit actions");
+            var exitActions = config.getExitActions(transition.getSource());
+            runAllActions(exitActions, transition, event, args);
+
+            log.debug("Executing before transition actions");
             var beforeTransitionActions = config.getBeforeActions(transition);
-            if (!beforeTransitionActions.isEmpty()) {
-                beforeTransitionActions.forEach(action -> action.run(executionContext, transition, event, args));
-            }
+            runAllActions(beforeTransitionActions, transition, event, args);
 
             executionContext.setState(transition.getTarget());
 
+            log.debug("Executing after transition actions");
             var afterTransitionActions = config.getAfterActions(transition);
-            if (!afterTransitionActions.isEmpty()) {
-                afterTransitionActions.forEach(action -> action.run(executionContext, transition, event, args));
-            }
+            runAllActions(afterTransitionActions, transition, event, args);
 
-            var enterActions = config.getEnterActions(transition.getSource());
-            if (!enterActions.isEmpty()) {
-                enterActions.forEach(action -> action.run(executionContext, transition, event, args));
-            }
+            log.debug("Executing enter actions");
+            var enterActions = config.getEnterActions(transition.getTarget());
+            runAllActions(enterActions, transition, event, args);
 
-            if (config.getEndStates().contains(executionContext.getState())) {
+            if (config.getTerminalStates().contains(executionContext.getState())) {
                 stop(FsmExecutionStatus.TERMINATED);
             }
 
+            log.debug("Transition completed");
+
             return true;
         } catch (RuntimeException e) {
+            log.debug("Error while transition", e);
             stop(FsmExecutionStatus.ABORTED);
             throw e;
         }
     }
 
+    private void runAllActions(List<TransitionAction<S, E, C>> actions, Transition<S> transition, E event, FsmEventArgs args) {
+        if (!actions.isEmpty()) {
+            actions.forEach(action -> action.run(executionContext, transition, event, args));
+        }
+    }
+
     private void stop(FsmExecutionStatus status) {
+        log.debug("Stopping with execution status {}", status);
         try {
             executionContext.close();
+
+            log.debug("Stopped");
         } catch (RuntimeException e) {
-            log.error("Error while shutdown", e);
+            log.error("Error while stopping", e);
         } finally {
             executionStatus = status;
         }

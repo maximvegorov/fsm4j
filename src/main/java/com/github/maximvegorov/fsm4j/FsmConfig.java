@@ -29,7 +29,7 @@ public final class FsmConfig<S, E, C extends FsmExecutionContext<S>> {
     @NonNull
     private final TransitionFallback<S, E, C> transitionFallback;
     @NonNull
-    private final Set<S> endStates;
+    private final Set<S> terminalStates;
 
     public static <S, E, C extends FsmExecutionContext<S>> FsmConfigBuilder<S, E, C> builder() {
         return new FsmConfigBuilder<>();
@@ -65,7 +65,7 @@ public final class FsmConfig<S, E, C extends FsmExecutionContext<S>> {
         return enterActions.getOrDefault(state, emptyList());
     }
 
-    public Set<S> getEndStates() {
-        return endStates;
+    public Set<S> getTerminalStates() {
+        return terminalStates;
     }
 }
