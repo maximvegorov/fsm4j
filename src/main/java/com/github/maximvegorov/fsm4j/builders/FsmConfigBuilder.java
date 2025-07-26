@@ -22,9 +22,9 @@ public final class FsmConfigBuilder<S, E, C extends FsmExecutionContext<S>> {
         return this;
     }
 
-    public FsmConfig<S, E, C> build(@NonNull Set<S> endStates) {
-        if (endStates.isEmpty()) {
-            throw new IllegalArgumentException("endStates: " + endStates);
+    public FsmConfig<S, E, C> build(@NonNull Set<S> terminalStates) {
+        if (terminalStates.isEmpty()) {
+            throw new IllegalArgumentException("terminalStates: " + terminalStates);
         }
 
         var transitions = new HashMap<S, Map<E, List<TransitionTarget<S, E, C>>>>();
@@ -55,7 +55,7 @@ public final class FsmConfigBuilder<S, E, C extends FsmExecutionContext<S>> {
             if (!stateConfig.getAfterActions().isEmpty()) {
                 for (var targetAndAfterActions : stateConfig.getAfterActions().entrySet()) {
                     var transition = Transition.of(stateConfig.getState(), targetAndAfterActions.getKey());
-                    beforeActions.computeIfAbsent(transition, e -> new ArrayList<>())
+                    afterActions.computeIfAbsent(transition, e -> new ArrayList<>())
                             .addAll(List.copyOf(targetAndAfterActions.getValue()));
                 }
             }
@@ -64,13 +64,16 @@ public final class FsmConfigBuilder<S, E, C extends FsmExecutionContext<S>> {
             }
         }
 
+        var finalTransitionFallback = Optional.ofNullable(transitionFallback)
+                .orElse((c, e, args) -> Optional.empty());
+
         return new FsmConfig<>(
                 transitions,
                 exitActions,
                 beforeActions,
                 afterActions,
                 enterActions,
-                Optional.ofNullable(transitionFallback).orElse((c, e, args) -> Optional.empty()),
-                endStates);
+                finalTransitionFallback,
+                terminalStates);
     }
 }
