@@ -11,6 +11,17 @@ import java.util.*;
 
 import static java.util.Collections.emptyList;
 
+/**
+ * A builder class for configuring target state transitions in a finite state machine (FSM).
+ * This builder facilitates the specification of conditions, actions, and the target state
+ * for a given event during the FSM configuration process. It ensures a fluent interface
+ * for defining the behavior of the FSM when a specific event occurs.
+ *
+ * @param <S> the type representing the FSM's states.
+ * @param <E> the type representing the events triggering FSM transitions.
+ * @param <C> the type extending {@link FsmExecutionContext}, providing state management
+ *            and execution context during the FSM's lifecycle.
+ */
 @RequiredArgsConstructor
 @ToString
 public final class FsmTargetConfigBuilder<S, E, C extends FsmExecutionContext<S>> {

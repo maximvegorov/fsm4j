@@ -13,6 +13,15 @@ import java.util.Set;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.emptyMap;
 
+/**
+ * Represents the configuration for a finite state machine (FSM).
+ * This class defines the behavior, transitions, and actions of the FSM, allowing customization
+ * for its execution depending on the current state, event, and context.
+ *
+ * @param <S> the type representing the states of the FSM
+ * @param <E> the type representing the events of the FSM
+ * @param <C> the type extending the {@code FsmExecutionContext} representing the execution context of the FSM
+ */
 @RequiredArgsConstructor
 @ToString
 public final class FsmConfig<S, E, C extends FsmExecutionContext<S>> {

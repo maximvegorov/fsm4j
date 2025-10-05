@@ -13,6 +13,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Builder class for configuring conditional transitions (choices) in a finite state machine (FSM).
+ * This builder is used to define event-based transitions with multiple possible target states,
+ * allowing the transitions to be determined dynamically at runtime based on specified predicates.
+ * The configured transitions are added to a parent state configuration through the {@code end} method.
+ *
+ * @param <S> the type representing the states in the FSM.
+ * @param <E> the type representing the events triggering transitions in the FSM.
+ * @param <C> the type extending {@link FsmExecutionContext}, providing contextual information
+ *            during the FSM's execution.
+ */
 @Getter(AccessLevel.PACKAGE)
 @RequiredArgsConstructor
 public final class FsmChoiceConfigBuilder<S, E, C extends FsmExecutionContext<S>> {

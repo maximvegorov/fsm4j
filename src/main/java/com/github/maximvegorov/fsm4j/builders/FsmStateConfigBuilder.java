@@ -5,6 +5,15 @@ import lombok.*;
 
 import java.util.*;
 
+/**
+ * A builder class for configuring the behavior of a specific state in a finite state machine (FSM).
+ * It allows specifying transitions, actions to be executed before and after transitions,
+ * as well as actions to be triggered upon entering and exiting the state.
+ *
+ * @param <S> the type representing the states in the FSM.
+ * @param <E> the type representing the events that trigger transitions in the FSM.
+ * @param <C> the type of the execution context used during the FSM's lifetime, which extends {@link FsmExecutionContext}.
+ */
 @Getter(AccessLevel.PACKAGE)
 @RequiredArgsConstructor
 @ToString

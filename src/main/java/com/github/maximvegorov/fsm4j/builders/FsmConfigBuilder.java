@@ -8,6 +8,15 @@ import java.util.*;
 
 import static java.util.stream.Collectors.toUnmodifiableMap;
 
+/**
+ * Builder class for configuring and creating a finite state machine (FSM) configuration.
+ * This class allows defining states, transitions, fallback mechanisms, and various transition-related actions
+ * (before, after, enter, and exit actions) for constructing a robust FSM configuration.
+ *
+ * @param <S> the type representing the states of the FSM.
+ * @param <E> the type representing the events triggering transitions in the FSM.
+ * @param <C> the type of context used during FSM execution, extending {@link FsmExecutionContext}.
+ */
 @ParametersAreNonnullByDefault
 public final class FsmConfigBuilder<S, E, C extends FsmExecutionContext<S>> {
     private final Map<S, FsmStateConfigBuilder<S, E, C>> configs = new HashMap<>();
