@@ -96,7 +96,7 @@ public final class Fsm<S, E, C extends FsmExecutionContext<S>> implements AutoCl
      */
     @Override
     public void close() {
-        if (executionStatus != FsmExecutionStatus.RUNNING) {
+        if (executionStatus == FsmExecutionStatus.RUNNING) {
             stop(FsmExecutionStatus.TERMINATED);
         }
     }
