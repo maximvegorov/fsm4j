@@ -14,6 +14,8 @@ import java.util.List;
  * @param <S> the type representing the state.
  * @param <E> the type representing the event that triggers state transitions.
  * @param <C> the type representing the execution context which defines the state and allows additional customization.
+ *
+ * Not thread-safe.
  */
 @Getter
 @ToString
