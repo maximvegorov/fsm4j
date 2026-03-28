@@ -1,8 +1,8 @@
-package io.github.maximvegorov.builders;
+package io.github.maximvegorov.fsm4j.builders;
 
-import io.github.maximvegorov.FsmExecutionContext;
-import io.github.maximvegorov.Transition;
-import io.github.maximvegorov.TransitionTarget;
+import io.github.maximvegorov.fsm4j.FsmExecutionContext;
+import io.github.maximvegorov.fsm4j.Transition;
+import io.github.maximvegorov.fsm4j.TransitionTarget;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;
