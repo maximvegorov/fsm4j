@@ -1,6 +1,7 @@
-package com.github.maximvegorov.fsm4j.builders;
+package io.github.maximvegorov.builders;
 
 import com.github.maximvegorov.fsm4j.*;
+import io.github.maximvegorov.*;
 import lombok.*;
 
 import java.util.*;

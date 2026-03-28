@@ -1,8 +1,8 @@
-package com.github.maximvegorov.fsm4j.builders;
+package io.github.maximvegorov.builders;
 
-import com.github.maximvegorov.fsm4j.FsmExecutionContext;
-import com.github.maximvegorov.fsm4j.TransitionAction;
-import com.github.maximvegorov.fsm4j.TransitionPredicate;
+import io.github.maximvegorov.FsmExecutionContext;
+import io.github.maximvegorov.TransitionAction;
+import io.github.maximvegorov.TransitionPredicate;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;

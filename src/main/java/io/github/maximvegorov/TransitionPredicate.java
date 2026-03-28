@@ -1,4 +1,4 @@
-package com.github.maximvegorov.fsm4j;
+package io.github.maximvegorov;
 
 /**
  * Functional interface representing a predicate that determines whether a specified

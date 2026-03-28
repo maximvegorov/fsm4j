@@ -1,4 +1,4 @@
-package com.github.maximvegorov.fsm4j;
+package io.github.maximvegorov;
 
 import javax.annotation.Nonnull;
 import java.util.Optional;

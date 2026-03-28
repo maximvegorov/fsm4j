@@ -1,6 +1,6 @@
-package com.github.maximvegorov.fsm4j;
+package io.github.maximvegorov;
 
-import com.github.maximvegorov.fsm4j.builders.FsmConfigBuilder;
+import io.github.maximvegorov.builders.FsmConfigBuilder;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;

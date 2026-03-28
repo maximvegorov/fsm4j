@@ -1,4 +1,4 @@
-package com.github.maximvegorov.fsm4j;
+package io.github.maximvegorov;
 
 /**
  * Represents an empty implementation of the {@link FsmEventArgs} interface.
