@@ -1,4 +1,4 @@
-package com.github.maximvegorov.fsm4j;
+package io.github.maximvegorov.fsm4j;
 
 import lombok.Getter;
 import lombok.NonNull;

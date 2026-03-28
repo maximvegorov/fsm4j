@@ -1,4 +1,4 @@
-package com.github.maximvegorov.fsm4j;
+package io.github.maximvegorov.fsm4j;
 
 /**
  * A marker interface that represents event arguments for transitions in a finite state machine (FSM).

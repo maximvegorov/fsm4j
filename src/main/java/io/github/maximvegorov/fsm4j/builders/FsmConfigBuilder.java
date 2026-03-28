@@ -1,6 +1,7 @@
-package com.github.maximvegorov.fsm4j.builders;
+package io.github.maximvegorov.fsm4j.builders;
 
 import com.github.maximvegorov.fsm4j.*;
+import io.github.maximvegorov.fsm4j.*;
 import lombok.NonNull;
 
 import javax.annotation.ParametersAreNonnullByDefault;

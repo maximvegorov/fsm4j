@@ -1,4 +1,4 @@
-package com.github.maximvegorov.fsm4j;
+package io.github.maximvegorov.fsm4j;
 
 /**
  * Represents the execution status of a Finite State Machine (FSM).

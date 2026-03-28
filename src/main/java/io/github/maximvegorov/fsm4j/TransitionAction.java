@@ -1,4 +1,4 @@
-package com.github.maximvegorov.fsm4j;
+package io.github.maximvegorov.fsm4j;
 
 /**
  * Represents an action to be executed during a state transition in a finite state machine (FSM).
